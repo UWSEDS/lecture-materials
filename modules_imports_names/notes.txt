@@ -1,0 +1,119 @@
+# not doing in a notebook because modules are 
+# the `.py` files you have heard about
+
+# go to a folder, git status to make sure not in a git repo
+# make a new directory
+mkdir my_project
+
+# notebooks are great, but they are hard to build large
+# sophisticated software in.  This is where .py files come in
+touch module.py
+# edit module.py and add a print
+echo 'print("Inside module.py")' > module.py
+# run the module from the command line:
+python module.py
+# explain that when you use python from the command line using a .py
+# as an argument, it executes the statements in the .py file
+
+# open a jupyter notebook in the same directory
+# make sure to show that module.py was in the jupyter browser
+# this is important
+# click on this file and show you can edit it
+# create a new jupyter notebok
+# in notebook, import the module.py file
+# show that it prints the stuff
+# edit module.py and try to reimport it
+# show that it doesn't autoreload  - you can change this but for now
+# the easiest thing to do is restart kernel and reimport
+# you can also do magic:
+%load_ext autoreload
+
+# back in the terminal
+# add two functions to the functions.py
+def function_t():
+	"""Sample demo function."""
+	print("inside function 1")
+
+def function_2(my_string):
+	"""Sample demo function that takes an argument."""
+	print("inside function 2: " + my_string)
+# at the command line
+python functions.py
+# nothing happens
+
+# back in the notebook
+from functions import *
+# show how you can now fund function_1 and function_2 in the global namespace
+function_1 use tab completion, etc. to show
+# generally, we don't want to import things into the global namespace
+# polutes the global namespace
+import functions
+functions.function_1()
+# show you can import as, e.g.
+import functions as fn
+fn.functions_2("hello")
+# emphasize that importing while renaming can be confusing unless
+# it is a universally accepted thing
+
+# what is the search path for modules, show how to find it
+import sys
+print(sys.path)
+
+# create a math.py file and put something in it
+# try to import it in the notebook
+# note it imports the system libraries first despite the search path
+
+# let's create a python package
+# create a directory called 'special'
+mkdir special
+cd special
+touch special_functions.py
+# edit special_functions.py
+def special_function_1():
+	print("inside special function 1")
+# in the notebook:
+import special.special_functions
+special.special_functions.special_function_1()
+# note that for import, subdirectories are `.` based
+# in special create a __init__.py file that is empty
+touch __init__.py
+# when this file exists, a directory is now a python package!
+# now, if I don't want to do:
+### from special.special_functions import special_function_1
+# what I really want to do is import special
+# edit __init__.py
+from special_functions import *
+# restart kernel
+import special
+# it doesn't work... We can see from the stack trace it couldn't
+# find the special_functions.py file
+!pwd
+# add the leading `.` so that it looks in the special directory
+from .special_functions import *
+# now return to the import
+import special
+special.special_function_1()
+
+# why are global namespace imports bad bad bad
+# open special_functions.py again and add cos function
+def cos(my_param):
+    """Not the cos you are looking for"""
+    print("Oh, you just got punk'd!")
+
+# return to the notebook and import math
+import math
+math.cos(3.14)
+# import cos into the global name space BAD IDEA
+from math import *
+cos(3.14)
+# import special into the global name space BAD IDEA 2
+from special import *
+cos(3.14)
+# in a notebook, you can do
+?cos
+# poluting is bad, especially globally
+# poluting the global namespace is especially bad
+# DON'T DO GLOBAL WILDCARD IMPORTS!
+
+# why isn't it bad to do in __init__.py files?
+# because those wildcards always end up in the package import
