@@ -1,2 +1,2 @@
 Lecture content for UW Software Engineering for Data Scientists.
-For Fall 2020
+For Fall 2021
