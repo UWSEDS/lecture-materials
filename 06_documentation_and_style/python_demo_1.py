@@ -1,6 +1,7 @@
 from statistics import mean
 import numpy.random as nprnd
 from statistics import stdev
+# main function of file, I think
 def MyFuNcTiOn(ARGUMENT):
     m = mean(ARGUMENT)
     s = stdev(ARGUMENT)
